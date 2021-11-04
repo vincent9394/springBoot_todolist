@@ -1,0 +1,1 @@
+INSERT INTO todo_list (text,done) values ('hello world',TRUE), ('hello world',FALSE)
