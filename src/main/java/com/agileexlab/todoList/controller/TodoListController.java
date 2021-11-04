@@ -5,12 +5,8 @@ import com.agileexlab.todoList.dto.TodoListResponse;
 import com.agileexlab.todoList.entity.TodoList;
 import com.agileexlab.todoList.mapper.TodoListMapper;
 import com.agileexlab.todoList.service.TodoListService;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.config.annotation.CorsRegistry;
-import org.springframework.web.servlet.config.annotation.EnableWebMvc;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -52,7 +48,7 @@ public class TodoListController {
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public TodoListResponse deleteTodoItem(@PathVariable Integer id) {
-        return todoListMapper.toResponse(todoListService.deleteEmployee(id));
+        return todoListMapper.toResponse(todoListService.deleteTodoItem(id));
     }
 
 }

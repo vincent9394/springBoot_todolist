@@ -35,9 +35,9 @@ public class TodoListService {
         return todoListRepository.save(originTodoList);
     }
 
-    public TodoList deleteEmployee(Integer id) {
-        Optional<TodoList> deletedEmployee = todoListRepository.findById(id);
+    public TodoList deleteTodoItem(Integer id) {
+        Optional<TodoList> deletedTodoItem = todoListRepository.findById(id);
         todoListRepository.deleteById(id);
-        return deletedEmployee.orElse(null);
+        return deletedTodoItem.orElse(null);
     }
 }
