@@ -1,10 +1,13 @@
 package com.agileexlab.todoList.service;
 
 import com.agileexlab.todoList.entity.TodoList;
+import com.agileexlab.todoList.exception.TodoListException;
 import com.agileexlab.todoList.repository.TodoListRepository;
+
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class TodoListService {
@@ -16,5 +19,25 @@ public class TodoListService {
 
     public List<TodoList> findAll(){
         return todoListRepository.findAll();
+    }
+
+    public TodoList addTodoItem(TodoList todoList) {
+        return todoListRepository.save(todoList);
+    }
+
+    public TodoList updateTodoItem(Integer id, TodoList updatedTodoList) {
+        TodoList originTodoList = this.todoListRepository.findById(id).orElseThrow(TodoListException::new);
+        System.out.println(originTodoList);
+        if (updatedTodoList.getText() !=null){
+            originTodoList.setText(updatedTodoList.getText());
+        }
+        originTodoList.setDone(updatedTodoList.isDone());
+        return todoListRepository.save(originTodoList);
+    }
+
+    public TodoList deleteEmployee(Integer id) {
+        Optional<TodoList> deletedEmployee = todoListRepository.findById(id);
+        todoListRepository.deleteById(id);
+        return deletedEmployee.orElse(null);
     }
 }

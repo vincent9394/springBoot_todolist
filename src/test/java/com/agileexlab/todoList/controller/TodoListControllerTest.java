@@ -8,6 +8,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 
@@ -19,6 +20,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest
 @AutoConfigureMockMvc
 class TodoListControllerTest {
+    String url = "/todos";
+
     @Autowired
     MockMvc mockMvc;
 
@@ -36,9 +39,9 @@ class TodoListControllerTest {
 
 
     @Test
-    void should_return_all_todoItem_when_execute_get_all_todoItem_given_two_todoItem() throws Exception {
+    void should_return_all_todoItem_when_execute_findAllTodoList_given_two_todoItem() throws Exception {
         //given
-        TodoList todo = new TodoList();
+
 
 
        TodoList todoItem1 = todoListRepository.save(new TodoList("text 1",false));
@@ -50,5 +53,56 @@ class TodoListControllerTest {
         resultActions
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$[0].id").value(todoItem1.getId()));
+    }
+
+    @Test
+    void should_return_added_todoItem_when_execute_addTodoItem_given_one_todoItem_info() throws Exception {
+        //given
+        TodoList newTodoItem = todoListRepository.save(new TodoList("text 1",false));
+
+        //when
+        ResultActions resultActions = mockMvc.perform(post(url)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(newTodoItem)));
+
+        //then
+        resultActions
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.id").value(newTodoItem.getId()+1))
+                .andExpect(jsonPath("$.text").value(newTodoItem.getText()))
+                .andExpect(jsonPath("$.done").value((newTodoItem.isDone())));
+    }
+
+    @Test
+    void should_return_updated_todoItem_when_execute_updateTodoItem_given_one_todoItem_info() throws Exception{
+        //given
+        TodoList originTodoList = todoListRepository.save(new TodoList("text1",false));
+        TodoList updatedTodoList = originTodoList;
+        updatedTodoList.setDone(true);
+        String id = "/"+originTodoList.getId();
+        System.out.println("-----------------------------------------------------------ID is :"+id);
+        //when
+        ResultActions resultActions = mockMvc.perform(put(url+id).contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(updatedTodoList)));
+
+        //then
+        resultActions
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.id").value(updatedTodoList.getId()))
+                .andExpect(jsonPath("$.text").value(updatedTodoList.getText()))
+                .andExpect(jsonPath("$.done").value((updatedTodoList.isDone())));
+    }
+
+    @Test
+    void should_return_delete_one_todoItem_when_execute_deleteTodoItem_given_one_todoItem_id() throws Exception{
+        //given
+        TodoList deletedTodoList = todoListRepository.save(new TodoList("text1",false));
+        String id = "/"+deletedTodoList.getId();
+        //when
+        ResultActions resultActions = mockMvc.perform(delete(url+id));
+
+        //then
+        resultActions
+                .andExpect(status().isNoContent());
     }
 }

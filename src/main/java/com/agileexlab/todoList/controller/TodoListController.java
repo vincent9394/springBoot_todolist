@@ -1,14 +1,13 @@
 package com.agileexlab.todoList.controller;
 
+import com.agileexlab.todoList.dto.TodoListRequest;
 import com.agileexlab.todoList.dto.TodoListResponse;
 import com.agileexlab.todoList.entity.TodoList;
 import com.agileexlab.todoList.mapper.TodoListMapper;
 import com.agileexlab.todoList.service.TodoListService;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
@@ -17,18 +16,9 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 
-//@Configuration
-//@EnableWebMvc                 implements WebMvcConfigurer
 @RestController
 @RequestMapping("/todos")
-@CrossOrigin(origins = "http://localhost:3000", maxAge =3600)
 public class TodoListController {
-
-//    @Override
-//    public void addCorsMappings(CorsRegistry registry){
-//        registry.addMapping("/**")
-//                .allowedMethods("GET","POST");
-//    }
 
     private final TodoListMapper todoListMapper;
 
@@ -47,5 +37,22 @@ public class TodoListController {
                 .collect(Collectors.toList());
     }
 
+    @PostMapping
+    public TodoListResponse addTodoItem(@RequestBody TodoListRequest todoListRequest){
+        TodoList todoList = todoListService.addTodoItem(todoListMapper.toEntity(todoListRequest));
+        return todoListMapper.toResponse(todoList);
+    }
+
+    @PutMapping("/{id}")
+    public TodoListResponse updateTodoItem(@PathVariable Integer id, @RequestBody TodoList updatedTodoList){
+        TodoList todoList = todoListService.updateTodoItem(id,updatedTodoList);
+        return todoListMapper.toResponse(todoList);
+    }
+
+    @DeleteMapping("/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public TodoListResponse deleteTodoItem(@PathVariable Integer id) {
+        return todoListMapper.toResponse(todoListService.deleteEmployee(id));
+    }
 
 }
