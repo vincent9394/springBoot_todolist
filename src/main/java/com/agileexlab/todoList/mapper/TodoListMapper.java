@@ -8,19 +8,19 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class TodoListMapper {
-    public TodoList toEntity(TodoListRequest todoListRequest){
-        TodoList todoList =new TodoList();
+    public TodoList toEntity(TodoListRequest todoListRequest) {
+        TodoList todoList = new TodoList();
 
         BeanUtils.copyProperties(todoListRequest, todoList);
 
         return todoList;
     }
 
-    public TodoListResponse toResponse (TodoList todoList){
+    public TodoListResponse toResponse(TodoList todoList) {
         TodoListResponse todoListResponse = new TodoListResponse();
 
         BeanUtils.copyProperties(todoList, todoListResponse);
 
-        return  todoListResponse;
+        return todoListResponse;
     }
 }

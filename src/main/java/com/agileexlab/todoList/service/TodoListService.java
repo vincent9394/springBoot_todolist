@@ -3,8 +3,6 @@ package com.agileexlab.todoList.service;
 import com.agileexlab.todoList.entity.TodoList;
 import com.agileexlab.todoList.exception.TodoListException;
 import com.agileexlab.todoList.repository.TodoListRepository;
-
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -20,7 +18,7 @@ public class TodoListService {
         this.todoListRepository = todoListRepository;
     }
 
-    public List<TodoList> findAll(){
+    public List<TodoList> findAll() {
         return todoListRepository.findAll();
     }
 
@@ -30,7 +28,7 @@ public class TodoListService {
 
     public TodoList updateTodoItem(Integer id, TodoList updatedTodoList) {
         TodoList originTodoList = this.todoListRepository.findById(id).orElseThrow(TodoListException::new);
-        if (updatedTodoList.getText() !=null){
+        if (updatedTodoList.getText() != null) {
             originTodoList.setText(updatedTodoList.getText());
         }
         originTodoList.setDone(updatedTodoList.isDone());

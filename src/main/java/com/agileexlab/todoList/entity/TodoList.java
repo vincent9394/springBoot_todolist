@@ -16,7 +16,7 @@ public class TodoList {
 
     private boolean done;
 
-    public TodoList(){
+    public TodoList() {
 
     }
 
@@ -26,7 +26,7 @@ public class TodoList {
     }
 
     public TodoList(Integer id, String text, boolean done) {
-        this.id =id;
+        this.id = id;
         this.text = text;
         this.done = done;
     }

@@ -30,7 +30,7 @@ public class TodoListController {
     }
 
     @GetMapping
-    public List<TodoListResponse> findAllTodoList(){
+    public List<TodoListResponse> findAllTodoList() {
         return this.todoListService.findAll()
                 .stream()
                 .map(todoItem -> todoListMapper.toResponse(todoItem))
@@ -38,14 +38,14 @@ public class TodoListController {
     }
 
     @PostMapping
-    public TodoListResponse addTodoItem(@RequestBody TodoListRequest todoListRequest){
+    public TodoListResponse addTodoItem(@RequestBody TodoListRequest todoListRequest) {
         TodoList todoList = todoListService.addTodoItem(todoListMapper.toEntity(todoListRequest));
         return todoListMapper.toResponse(todoList);
     }
 
     @PutMapping("/{id}")
-    public TodoListResponse updateTodoItem(@PathVariable Integer id, @RequestBody TodoList updatedTodoList){
-        TodoList todoList = todoListService.updateTodoItem(id,updatedTodoList);
+    public TodoListResponse updateTodoItem(@PathVariable Integer id, @RequestBody TodoList updatedTodoList) {
+        TodoList todoList = todoListService.updateTodoItem(id, updatedTodoList);
         return todoListMapper.toResponse(todoList);
     }
 

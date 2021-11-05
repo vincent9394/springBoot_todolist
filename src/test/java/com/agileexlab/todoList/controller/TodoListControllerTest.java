@@ -11,7 +11,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
-//contro + option + O
+
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -32,7 +32,7 @@ class TodoListControllerTest {
     ObjectMapper objectMapper;
 
     @BeforeEach
-    void setUp(){
+    void setUp() {
         todoListRepository.deleteAll();
     }
 
@@ -40,8 +40,8 @@ class TodoListControllerTest {
     @Test
     void should_return_all_todoItem_when_execute_findAllTodoList_given_two_todoItem() throws Exception {
         //given
-       TodoList todoItem1 = todoListRepository.save(new TodoList("text 1",false));
-       TodoList todoItem2 = todoListRepository.save(new TodoList("text 2",false));
+        TodoList todoItem1 = todoListRepository.save(new TodoList("text 1", false));
+        TodoList todoItem2 = todoListRepository.save(new TodoList("text 2", false));
         //when
         ResultActions resultActions = this.mockMvc.perform(get("/todos"));
 
@@ -54,7 +54,7 @@ class TodoListControllerTest {
     @Test
     void should_return_added_todoItem_when_execute_addTodoItem_given_one_todoItem_info() throws Exception {
         //given
-        TodoList newTodoItem = todoListRepository.save(new TodoList("text 1",false));
+        TodoList newTodoItem = todoListRepository.save(new TodoList("text 1", false));
 
         //when
         ResultActions resultActions = mockMvc.perform(post(url)
@@ -64,22 +64,22 @@ class TodoListControllerTest {
         //then
         resultActions
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.id").value(newTodoItem.getId()+1))
+                .andExpect(jsonPath("$.id").value(newTodoItem.getId() + 1))
                 .andExpect(jsonPath("$.text").value(newTodoItem.getText()))
                 .andExpect(jsonPath("$.done").value((newTodoItem.isDone())));
     }
 
     @Test
-    void should_return_updated_todoItem_when_execute_updateTodoItem_given_one_todoItem_info() throws Exception{
+    void should_return_updated_todoItem_when_execute_updateTodoItem_given_one_todoItem_info() throws Exception {
         //given
-        TodoList originTodoList = todoListRepository.save(new TodoList("text1",false));
+        TodoList originTodoList = todoListRepository.save(new TodoList("text1", false));
         TodoList updatedTodoList = originTodoList;
         updatedTodoList.setDone(true);
-        String id = "/"+originTodoList.getId();
-        System.out.println("-----------------------------------------------------------ID is :"+id);
+        String id = "/" + originTodoList.getId();
+        System.out.println("-----------------------------------------------------------ID is :" + id);
         //when
-        ResultActions resultActions = mockMvc.perform(put(url+id).contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(updatedTodoList)));
+        ResultActions resultActions = mockMvc.perform(put(url + id).contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(updatedTodoList)));
 
         //then
         resultActions
@@ -90,12 +90,12 @@ class TodoListControllerTest {
     }
 
     @Test
-    void should_return_delete_one_todoItem_when_execute_deleteTodoItem_given_one_todoItem_id() throws Exception{
+    void should_return_delete_one_todoItem_when_execute_deleteTodoItem_given_one_todoItem_id() throws Exception {
         //given
-        TodoList deletedTodoList = todoListRepository.save(new TodoList("text1",false));
-        String id = "/"+deletedTodoList.getId();
+        TodoList deletedTodoList = todoListRepository.save(new TodoList("text1", false));
+        String id = "/" + deletedTodoList.getId();
         //when
-        ResultActions resultActions = mockMvc.perform(delete(url+id));
+        ResultActions resultActions = mockMvc.perform(delete(url + id));
 
         //then
         resultActions
@@ -105,10 +105,10 @@ class TodoListControllerTest {
     @Test
     void should_return_todoList_page_when_execute_findByPageAndPageSize_given_page_and_page_size() throws Exception {
         //given
-        TodoList TodoList1 = todoListRepository.save(new TodoList("text1",false));
-        TodoList TodoList2 = todoListRepository.save(new TodoList("text1",false));
-        TodoList TodoList3 = todoListRepository.save(new TodoList("text1",false));
-        TodoList TodoList4 = todoListRepository.save(new TodoList("text1",false));
+        TodoList TodoList1 = todoListRepository.save(new TodoList("text1", false));
+        TodoList TodoList2 = todoListRepository.save(new TodoList("text1", false));
+        TodoList TodoList3 = todoListRepository.save(new TodoList("text1", false));
+        TodoList TodoList4 = todoListRepository.save(new TodoList("text1", false));
         String page = "?page=1&size=2";
         //when
         ResultActions resultActions = mockMvc.perform(get(url + page));
