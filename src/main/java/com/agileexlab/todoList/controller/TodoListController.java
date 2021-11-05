@@ -5,6 +5,10 @@ import com.agileexlab.todoList.dto.TodoListResponse;
 import com.agileexlab.todoList.entity.TodoList;
 import com.agileexlab.todoList.mapper.TodoListMapper;
 import com.agileexlab.todoList.service.TodoListService;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
@@ -50,5 +54,17 @@ public class TodoListController {
     public TodoListResponse deleteTodoItem(@PathVariable Integer id) {
         return todoListMapper.toResponse(todoListService.deleteTodoItem(id));
     }
+
+    @GetMapping(params = {"page", "size"})
+    public PageImpl<TodoListResponse> findByPageAndPageSize(@PageableDefault Pageable pageable) {
+
+        Page<TodoList> todoLists = todoListService.findPagingTodoLists(pageable);
+        List<TodoListResponse> todoListResponses = todoLists.getContent().stream()
+                .map(todoItem -> todoListMapper.toResponse(todoItem))
+                .collect(Collectors.toList());
+        return new PageImpl<>(todoListResponses, todoLists.getPageable(), todoLists.getTotalElements());
+
+    }
+
 
 }

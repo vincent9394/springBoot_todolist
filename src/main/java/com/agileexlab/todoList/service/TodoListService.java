@@ -4,6 +4,9 @@ import com.agileexlab.todoList.entity.TodoList;
 import com.agileexlab.todoList.exception.TodoListException;
 import com.agileexlab.todoList.repository.TodoListRepository;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -39,4 +42,10 @@ public class TodoListService {
         todoListRepository.deleteById(id);
         return deletedTodoItem.orElse(null);
     }
+
+    public PageImpl<TodoList> findPagingTodoLists(Pageable pageable) {
+        return this.todoListRepository.findAll(pageable);
+    }
+
+
 }

@@ -101,4 +101,27 @@ class TodoListControllerTest {
         resultActions
                 .andExpect(status().isNoContent());
     }
+
+    @Test
+    void should_return_todoList_page_when_execute_findByPageAndPageSize_given_page_and_page_size() throws Exception {
+        //given
+        TodoList TodoList1 = todoListRepository.save(new TodoList("text1",false));
+        TodoList TodoList2 = todoListRepository.save(new TodoList("text1",false));
+        TodoList TodoList3 = todoListRepository.save(new TodoList("text1",false));
+        TodoList TodoList4 = todoListRepository.save(new TodoList("text1",false));
+        String page = "?page=1&size=2";
+        //when
+        ResultActions resultActions = mockMvc.perform(get(url + page));
+        //then
+        resultActions
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.content[0].id").value(TodoList3.getId()))
+                .andExpect(jsonPath("$.content[0].text").value(TodoList3.getText()))
+                .andExpect(jsonPath("$.content[0].done").value(TodoList3.isDone()))
+                .andExpect(jsonPath("$.content[1].id").value(TodoList4.getId()))
+                .andExpect(jsonPath("$.content[1].text").value(TodoList4.getText()))
+                .andExpect(jsonPath("$.content[1].done").value(TodoList4.isDone()))
+
+        ;
+    }
 }

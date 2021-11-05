@@ -6,6 +6,9 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.util.Arrays;
@@ -73,7 +76,7 @@ class TodoListServiceTest {
         assertEquals(true, actual.isDone());
 
     }
-    //TODO delete function failed
+
     @Test
     void should_return_delete_one_todoItem_when_execute_deleteTodoItem_given_one_todoItem_id() {
         //given
@@ -86,5 +89,22 @@ class TodoListServiceTest {
         verify(todoListRepository, times(1)).deleteById(1);
     }
 
+    @Test
+    void should_return_page_of_todoList_when_get_page_given_page_number_and_size() {
+        //given
+        List<TodoList> employees = Arrays.asList(
+                new TodoList("vincent1", true),
+                new TodoList("vincent2", true)
+        );
+        Pageable pageable = PageRequest.of(0, 2);
+        PageImpl<TodoList> content = new PageImpl<TodoList>(employees, pageable, employees.size());
+        when(todoListRepository.findAll(pageable)).thenReturn(content);
+        //when
+        PageImpl<TodoList> actual = todoListService.findPagingTodoLists(pageable);
+
+        //then
+        assertEquals(2, actual.getTotalElements());
+
+    }
 
 }

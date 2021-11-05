@@ -8,5 +8,6 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 public class TodoListException extends RuntimeException{
     public TodoListException(){
         super("TodoList has error");
+
     }
 }
