@@ -77,8 +77,7 @@ class TodoListServiceTest {
     @Test
     void should_return_delete_one_todoItem_when_execute_deleteTodoItem_given_one_todoItem_id() {
         //given
-        TodoList todoList = todoListRepository.save(new TodoList("text1",true));
-        doNothing().when(todoListRepository).getById(1);
+        doNothing().when(todoListRepository).deleteById(1);
 
         //when
         todoListService.deleteTodoItem(1);

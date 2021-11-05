@@ -27,7 +27,6 @@ public class TodoListService {
 
     public TodoList updateTodoItem(Integer id, TodoList updatedTodoList) {
         TodoList originTodoList = this.todoListRepository.findById(id).orElseThrow(TodoListException::new);
-        System.out.println(originTodoList);
         if (updatedTodoList.getText() !=null){
             originTodoList.setText(updatedTodoList.getText());
         }

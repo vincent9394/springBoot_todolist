@@ -11,8 +11,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
-
-import static org.junit.jupiter.api.Assertions.*;
+//contro + option + O
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -41,9 +40,6 @@ class TodoListControllerTest {
     @Test
     void should_return_all_todoItem_when_execute_findAllTodoList_given_two_todoItem() throws Exception {
         //given
-
-
-
        TodoList todoItem1 = todoListRepository.save(new TodoList("text 1",false));
        TodoList todoItem2 = todoListRepository.save(new TodoList("text 2",false));
         //when
